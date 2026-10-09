@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealCash — Gaming & Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navbar -->
+        <header class="navbar">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">REALCASH</span>
+            </div>
+            <div class="nav-wallet">
+                <span class="balance-label">BALANCE:</span>
+                <span id="userBalanceDisplay" class="balance-val">Rs 0.00</span>
+                <button onclick="openDepositModal()" class="btn btn-green btn-sm">+ DEPOSIT</button>
+            </div>
+            <div class="auth-box">
+                <span id="userEmailTag" class="user-tag">Guest</span>
+                <button id="loginBtn" onclick="toggleAuthModal()" class="btn btn-outline btn-sm">LOGIN / REGISTER</button>
+            </div>
+        </header>
+
+        <!-- Main Content Layout -->
+        <div class="main-body">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <button class="nav-item active" onclick="switchTab('homeTab')">🏠 Home</button>
+                <button class="nav-item" onclick="switchTab('sportsTab')">⚽ Sports</button>
+                <button class="nav-item" onclick="switchTab('gamesTab')">🎰 Casino Games</button>
+                <button class="nav-item" onclick="switchTab('spinTab')">🌟 Daily Spin</button>
+                <button class="nav-item" onclick="switchTab('walletTab')">💳 Wallet & Ledger</button>
+                <button class="nav-item" onclick="switchTab('adminTab')">⚙️ Admin Panel</button>
+            </nav>
+
+            <!-- Content Screens -->
+            <main class="content-area">
+                <!-- HOME TAB -->
+                <section id="homeTab" class="tab-content active">
+                    <div class="banner-card">
+                        <div class="banner-info">
+                            <h2>FREE DAILY SPIN WHEEL</h2>
+                            <p>Spin every 24 hours to win guaranteed cash rewards from Rs 0 up to Rs 10!</p>
+                            <button onclick="switchTab('spinTab')" class="btn btn-gold">SPIN WHEEL NOW</button>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">POPULAR GAMES</h3>
+                    <div class="games-grid">
+                        <div class="game-card" onclick="switchTab('gamesTab')">
+                            <span class="game-icon">✈️</span>
+                            <h4>AVIATOR</h4>
+                            <p>Multiplier Crash</p>
+                        </div>
+                        <div class="game-card" onclick="switchTab('gamesTab')">
+                            <span class="game-icon">💣</span>
+                            <h4>MINES</h4>
+                            <p>5x5 Grid Sweeper</p>
+                        </div>
+                        <div class="game-card" onclick="switchTab('gamesTab')">
+                            <span class="game-icon">🐔</span>
+                            <h4>CHICKEN ROAD</h4>
+                            <p>Step Multiplier</p>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">LIVE SPORTS ODDS</h3>
+                    <div id="sportsLiveFeed" class="sports-feed">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- SPORTS TAB -->
+                <section id="sportsTab" class="tab-content">
+                    <h2 class="section-title">SPORTS BETTING MARKET</h2>
+                    <div id="sportsFullFeed" class="sports-feed"></div>
+                </section>
+
+                <!-- GAMES TAB -->
+                <section id="gamesTab" class="tab-content">
+                    <div class="game-selector-nav">
+                        <button class="subtab-btn active" onclick="loadGameModule('aviator')">✈️ Aviator</button>
+                        <button class="subtab-btn" onclick="loadGameModule('mines')">💣 Mines 5x5</button>
+                    </div>
+
+                    <!-- Aviator Module -->
+                    <div id="aviatorModule" class="game-module">
+                        <div class="aviator-screen">
+                            <div id="aviatorDisplay" class="aviator-display">
+                                <span id="aviatorMultiplier" class="multiplier-text">1.00x</span>
+                            </div>
+                            <div class="game-controls">
+                                <label>Bet Amount (Rs):</label>
+                                <input type="number" id="aviatorBetInput" value="50" min="10">
+                                <button id="aviatorStartBtn" onclick="startAviatorWeb()" class="btn btn-red">BET & START</button>
+                                <button id="aviatorCashoutBtn" onclick="cashoutAviatorWeb()" class="btn btn-gold" style="display:none;">CASH OUT</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mines Module -->
+                    <div id="minesModule" class="game-module" style="display:none;">
+                        <div class="mines-container">
+                            <div class="mines-stats">
+                                <span>MINES: 3</span>
+                                <span>MULTIPLIER: <strong id="minesMultiplierTag">1.00x</strong></span>
+                            </div>
+                            <div id="minesGrid" class="mines-grid"></div>
+                            <div class="game-controls">
+                                <button id="minesStartBtn" onclick="startMinesWeb()" class="btn btn-green">START MINES ROUND</button>
+                                <button id="minesCashoutBtn" onclick="cashoutMinesWeb()" class="btn btn-gold" style="display:none;">CASH OUT</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DAILY SPIN TAB -->
+                <section id="spinTab" class="tab-content">
+                    <div class="spin-wrapper">
+                        <h2>FREE DAILY SPIN WHEEL</h2>
+                        <p>Win random cash rewards (Rs 0 to Rs 10) credited to your balance!</p>
+
+                        <div class="wheel-box">
+                            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                            <div class="pointer">▼</div>
+                        </div>
+
+                        <button id="spinBtn" onclick="spinWheelWeb()" class="btn btn-gold btn-lg">SPIN WHEEL</button>
+                        <p id="spinResultText" class="spin-result"></p>
+                    </div>
+                </section>
+
+                <!-- WALLET TAB -->
+                <section id="walletTab" class="tab-content">
+                    <div class="wallet-layout">
+                        <div class="wallet-card-box">
+                            <h3>WALLET BALANCE</h3>
+                            <h1 id="walletBalanceBig">Rs 0.00</h1>
+                        </div>
+
+                        <div class="wallet-actions">
+                            <div class="action-box">
+                                <h4>DEPOSIT MONEY (Min Rs 100)</h4>
+                                <div class="preset-row">
+                                    <button onclick="depositWeb(100)" class="btn btn-outline">Rs 100</button>
+                                    <button onclick="depositWeb(200)" class="btn btn-outline">Rs 200</button>
+                                    <button onclick="depositWeb(500)" class="btn btn-outline">Rs 500</button>
+                                    <button onclick="depositWeb(1000)" class="btn btn-outline">Rs 1000</button>
+                                </div>
+                            </div>
+
+                            <div class="action-box">
+                                <h4>WITHDRAW MONEY (Min Rs 800)</h4>
+                                <input type="number" id="withdrawAmountInput" placeholder="Enter amount (Min Rs 800)">
+                                <button onclick="withdrawWeb()" class="btn btn-gold">REQUEST WITHDRAWAL</button>
+                            </div>
+                        </div>
+
+                        <!-- DISCLAIMER -->
+                        <div class="disclaimer-alert">
+                            ⚠️ <strong>LEGAL DISCLAIMER:</strong> Withdrawals require prior deposit & game activity. Minimum withdrawal limit is Rs 800. Gaming involves financial risk.
+                        </div>
+
+                        <h3>TRANSACTION LEDGER</h3>
+                        <table class="ledger-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref ID</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Balance After</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledgerTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ADMIN TAB -->
+                <section id="adminTab" class="tab-content">
+                    <h2>SYSTEM OVERVIEW & AUDIT</h2>
+                    <div id="adminStatsBox" class="admin-stats-grid"></div>
+
+                    <h3>USER ACCOUNT MANAGEMENT</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Balance</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserTable"></tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
