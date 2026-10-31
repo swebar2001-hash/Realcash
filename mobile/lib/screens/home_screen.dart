@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
             const Text(
               'REALCASH',
               style: TextStyle(
-                fontWeight: FontWeight.black,
+                fontWeight: FontWeight.w900,
                 letterSpacing: 1.2,
                 color: AppTheme.primaryGreen,
               ),
@@ -170,7 +170,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 140,
+              height: 165,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -348,9 +348,28 @@ class HomeScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(teamA, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-              Text(score, style: const TextStyle(color: AppTheme.accentGold, fontWeight: FontWeight.bold)),
-              Text(teamB, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              Expanded(
+                child: Text(
+                  teamA,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  score,
+                  style: const TextStyle(color: AppTheme.accentGold, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  teamB,
+                  textAlign: TextAlign.end,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 14),
